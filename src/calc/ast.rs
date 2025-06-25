@@ -42,12 +42,12 @@ mod tests {
 
     // 辅助函数：创建数字节点
     fn num(n: i64) -> Node {
-        Node::Num(Decimal::new(n, 0))
+        Num(Decimal::new(n, 0))
     }
 
     // 辅助函数：创建小数节点
     fn dec(s: &str) -> Node {
-        Node::Num(Decimal::from_str_exact(s).unwrap())
+        Num(Decimal::from_str_exact(s).unwrap())
     }
 
     #[test]
@@ -97,8 +97,8 @@ mod tests {
     fn test_decimal_operations() {
         // 小数加法
         let ast = Ast(Add(
-            Box::new(Node::Num(dec!(0.1))),
-            Box::new(Node::Num(dec!(0.2)))
+            Box::new(Num(dec!(0.1))),
+            Box::new(Num(dec!(0.2)))
         ));
         assert_eq!(ast.eval(), dec!(0.3));
         
@@ -111,8 +111,8 @@ mod tests {
         
         // 小数幂运算
         let ast = Ast(Pow(
-            Box::new(Node::Num(dec!(4.0))),
-            Box::new(Node::Num(dec!(0.5)))
+            Box::new(Num(dec!(4.0))),
+            Box::new(Num(dec!(0.5)))
         ));
         assert!(ast.eval() - dec!(2.0) < dec!(0.000000001));
     }
@@ -124,14 +124,14 @@ mod tests {
         // 负数的分数幂
         let ast = Ast(Pow(
             Box::new(num(-8)),
-            Box::new(Node::Num(dec!(1) / dec!(3))))
+            Box::new(Num(dec!(1) / dec!(3))))
         );
         assert!(ast.eval() - dec!(-2) < dec!(0.00000001));
         
         // 大数运算
         let ast = Ast(Mul(
-            Box::new(Node::Num(dec!(100_0000_0000_0000))),
-            Box::new(Node::Num(dec!(100_0000_0000_0000)))
+            Box::new(Num(dec!(100_0000_0000_0000))),
+            Box::new(Num(dec!(100_0000_0000_0000)))
         ));
         assert_eq!(ast.eval(), dec!(1_0000_0000_0000_0000_0000_0000_0000));
     }

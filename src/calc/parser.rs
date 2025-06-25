@@ -430,11 +430,11 @@ mod test {
         );
 
         // 测试运算符之后跟运算符的错误
-        let tokens = Tokenizer::from("13.0 *-+-- 1 ").collect();
+        let tokens = Tokenizer::from("14.0 *-+-- 1 ").collect();
         assert_eq!(
             basic_check(tokens),
             Ok(vec![
-                Token::Num(dec!(13.0)),
+                Token::Num(dec!(14.0)),
                 Token::Op(Operator::Mul),
                 Token::Num(dec!(-1))
             ])
@@ -481,7 +481,7 @@ mod test {
         use super::Operator::*;
         use super::Token::*;
         // 测试基本表达式
-        let tokens = vec![Num(dec!(1)), Op(Add), Num(dec!(2)), Token::EOF];
+        let tokens = vec![Num(dec!(1)), Op(Add), Num(dec!(2)), EOF];
         let rpn = get_rpn(tokens).unwrap();
         assert_eq!(rpn, vec![Num(dec!(1)), Num(dec!(2)), Op(Add)]);
 
@@ -492,7 +492,7 @@ mod test {
             Num(dec!(2)),
             Op(Mul),
             Num(dec!(3)),
-            Token::EOF,
+            EOF,
         ];
         let rpn = get_rpn(tokens).unwrap();
         assert_eq!(
@@ -509,7 +509,7 @@ mod test {
             Paren(')'),
             Op(Mul),
             Num(dec!(3)),
-            Token::EOF,
+            EOF,
         ];
         let rpn = get_rpn(tokens).unwrap();
         assert_eq!(
@@ -524,7 +524,7 @@ mod test {
             Num(dec!(3)),
             Op(Pow),
             Num(dec!(4)),
-            Token::EOF,
+            EOF,
         ];
         let rpn = get_rpn(tokens).unwrap();
         assert_eq!(
@@ -545,7 +545,7 @@ mod test {
             Num(dec!(2)),
             Op(Pow),
             Num(dec!(3)),
-            Token::EOF,
+            EOF,
         ];
         let rpn = get_rpn(tokens).unwrap();
         assert_eq!(
@@ -715,14 +715,14 @@ mod test {
         );
 
         // 复杂表达式
-        let ast = Parser::parse("3 * (4 + 5) - 2 ^ 3").unwrap();
+        let ast = Parser::parse("3 * (5 + 5) - 2 ^ 3").unwrap();
         assert_eq!(
             ast,
             Ast(Node::Sub(
                 Box::new(Node::Mul(
                     Box::new(Node::Num(dec!(3))),
                     Box::new(Node::Add(
-                        Box::new(Node::Num(dec!(4))),
+                        Box::new(Node::Num(dec!(5))),
                         Box::new(Node::Num(dec!(5)))
                     ))
                 )),
